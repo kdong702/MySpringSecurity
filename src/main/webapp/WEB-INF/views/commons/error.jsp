@@ -12,7 +12,7 @@
 		history.back();
 	}
 	function loginPage(){
-		location.href = "<c:url value='/manage/login.do'/>";
+		location.href = "<c:url value='/login'/>";
 	}
 </script>
 </head>

@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().authorizeRequests().antMatchers("/login").permitAll()
-        .antMatchers("/").authenticated()
+        .antMatchers("/").authenticated() // "/" url 인증받은 사용자만 사용가능
         .and().logout().permitAll()
         .and().formLogin().loginPage("/login").loginProcessingUrl("/loginProcess")
         .successHandler(loginSuccessHandler)
@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         .and().logout().logoutSuccessUrl("/login").invalidateHttpSession(true)
         .and().csrf().disable()
         .sessionManagement()
-        .invalidSessionUrl("/login")
+        .invalidSessionUrl("/login") // expiredUrl 과 동시사용의 경우 invalidSessionUrl 우선 적용
         .maximumSessions(1) //동일한 사용자 동시 세션 허용 금지
         .maxSessionsPreventsLogin(false)
         .expiredUrl("/test"); // 세션 시간 초과후 

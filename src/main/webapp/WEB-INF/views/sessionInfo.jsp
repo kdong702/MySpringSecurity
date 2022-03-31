@@ -56,7 +56,7 @@
 								<span class="user_name"><a href="javascript:;"><span><strong>${userId } </strong>${name } </span></a></span>
 							</div>
 							<div class="btn_account_group">
-								<a href="javasciprt:;" class="btn_acc">정보수정</a><a href="javasciprt:;" class="btn_acc">로그아웃</a>
+								<a href="javasciprt:;" class="btn_acc">정보수정</a><a href="<c:url value="/logout"/>" class="btn_acc">로그아웃</a>
 							</div>
 						</sec:authorize>
 						<sec:authorize access = "isAnonymous()">
@@ -65,7 +65,7 @@
 							<span class="user_name"><a href="javascript:;"><span><strong>비로그인 </strong> </span></a></span>
 						</div>
 						<div class="btn_account_group">
-							<a href="javasciprt:;" class="btn_acc">로그인</a>
+							<a href="<c:url value ="/Login"/>" class="btn_acc">로그인</a>
 						</div>
 						</sec:authorize>
 						
