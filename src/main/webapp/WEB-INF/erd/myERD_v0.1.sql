@@ -1,0 +1,44 @@
+CREATE TABLE IF NOT EXISTS TB_ADMIN (
+  ADMIN_ID varchar(32) NOT NULL COMMENT '관리자 아이디',
+  ROLE_ID int(1) NOT NULL DEFAULT '0' COMMENT '권한_id',
+  PASSWORD varchar(100) NOT NULL COMMENT '관리자 패스워드',
+  NAME varchar(32) DEFAULT NULL COMMENT '관리자 이름',
+  STATUS int(1) DEFAULT '0' COMMENT '관리자 상태',
+  PASSWORD_FAIL_COUNT int(1) DEFAULT '0' COMMENT '패스워드 입력 실패 횟수',
+  REG_ID varchar(45) DEFAULT NULL COMMENT '등록자',
+  REG_DT varchar(45) DEFAULT NULL COMMENT '등록일',
+  MOD_ID varchar(45) DEFAULT NULL COMMENT '수정자',
+  MOD_DT varchar(45) DEFAULT NULL COMMENT '수정일',
+  PRIMARY KEY (ADMIN_ID)
+);
+
+CREATE TABLE TB_ROLE
+(
+	ROLE_ID int NOT NULL,
+	ROLE_NAME varchar(100) NOT NULL,
+   	ROLE_NAME_E varchar(100) NOT NULL,
+	ROLE_TYPE varchar(8),
+	DESCRIPTION varchar(200),
+	REG_ID varchar(20),
+	REG_DT timestamp,
+	MOD_ID varchar(20),
+	MOD_DT timestamp,
+	PRIMARY KEY (ROLE_ID)
+);
+
+CREATE TABLE TB_ROLE_MENU
+(
+	ROLE_ID int NOT NULL,
+	MENU_CD varchar(8) NOT NULL
+);
+
+CREATE TABLE TB_MENU
+(
+	MENU_CD varchar(8) NOT NULL,
+	MENU_GROUP_CD varchar(8) NOT NULL,
+	MENU_NAME varchar(200) NOT NULL,
+	MENU_NAME_E varchar(200) ,
+	MENU_URL varchar(100) NOT NULL,
+	MENU_DEFAULT_URL varchar(100),
+	PRIMARY KEY (MENU_CD)
+);

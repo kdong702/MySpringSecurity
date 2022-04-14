@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.lotson.model.TbAdmin;
 
 @Repository
-public interface DemoDao {
+public interface UserDao {
     String selectAdminInfo();
 
     TbAdmin findByUserName(String adminId);

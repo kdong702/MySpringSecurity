@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.lotson.dao.RoleDao">
+	
+	<resultMap id="resultTbRole" type="kr.co.lotson.model.TbRole">
+    	<result property="roleId"				column="A_ROLE_ID"/>
+	</resultMap>
+	
+	<resultMap id="resultTbMenu" type="kr.co.lotson.model.TbMenu">
+		<result property="menuCd" 				column="B_MENU_CD" />
+		<result property="menuName" 			column="B_MENU_NAME" />
+		<result property="menuGroupCd" 			column="B_MENU_GROUP_CD" />
+		<result property="menuUrl" 				column="B_MENU_URL" />
+		<result property="menuDefaultUrl" 		column="B_MENU_DEFAULT_URL"/>
+	</resultMap>
+	
+	<resultMap id="resultTbRoleMenu" type="kr.co.lotson.model.TbRoleMenu" >
+		<collection property="tbRole" resultMap="resultTbRole"/>
+		<collection property="tbMenu" resultMap="resultTbMenu"/>
+	</resultMap>
+	
+	
+	
+	<select id="selectRoleMenuListByRoleId" parameterType="Int" resultMap="resultTbRoleMenu">
+		SELECT 
+			A.ROLE_ID as A_ROLE_ID,
+			B.MENU_CD as B_MENU_CD,
+			B.MENU_NAME as B_MENU_NAME, 
+			B.MENU_GROUP_CD as B_MENU_GROUP_CD,
+			B.MENU_URL as B_MENU_URL, 
+			B.MENU_DEFAULT_URL as B_MENU_DEFAULT_URL 
+		FROM 
+			TB_ROLE_MENU A,
+			TB_MENU B
+		WHERE 
+			A.MENU_CD = B.MENU_CD
+		AND	
+			A.ROLE_ID = #{roleId}
+		ORDER BY 
+			B.MENU_CD
+	</select>
+	
+	<select id="selectRoleInfoByUserId" parameterType="String" resultType="kr.co.lotson.model.TbRole">
+		SELECT 
+            B.ROLE_ID as ROLE_ID,
+            B.ROLE_NAME as ROLE_NAME,
+            B.ROLE_NAME_E as ROLE_NAME_E,
+            B.ROLE_TYPE as ROLE_TYPE, 
+            B.DESCRIPTION as DESCRIPTION, 
+            B.REG_ID as REG_ID,
+            B.REG_DT as REG_DT,
+            B.MOD_ID as MOD_ID,
+            B.MOD_DT as MOD_DT
+            FROM TB_ROLE B, TB_ADMIN A
+            WHERE A.ROLE_ID = B.ROLE_ID
+            AND A.ADMIN_ID = #{adminId}
+		 
+	</select>
+	
+	<select id="selectRolePermitUrl" resultType = "hashmap">
+		SELECT 
+			A.ROLE_ID as ROLE_ID,
+			B.MENU_CD as MENU_CD,
+			B.MENU_NAME as MENU_NAME, 
+			B.MENU_GROUP_CD as MENU_GROUP_CD,
+			B.MENU_URL as MENU_URL, 
+			B.MENU_DEFAULT_URL as MENU_DEFAULT_URL, 
+            C.ROLE_NAME_E as ROLE_NAME_E
+		FROM 
+			TB_ROLE_MENU A,
+			TB_MENU B,
+            TB_ROLE C
+		WHERE 
+			A.MENU_CD = B.MENU_CD
+        AND
+            A.ROLE_ID = C.ROLE_ID
+		ORDER BY 
+			A.ROLE_ID,B.MENU_CD DESC
+	</select>	
+	
+</mapper>

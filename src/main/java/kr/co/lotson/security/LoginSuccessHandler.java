@@ -1,6 +1,7 @@
 package kr.co.lotson.security;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import kr.co.lotson.model.TbAdmin;
+import kr.co.lotson.model.TbRoleMenu;
 import kr.co.lotson.service.LoginService;
+import kr.co.lotson.service.RoleMenuService;
 
 @Component
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -20,14 +23,19 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Autowired
     private LoginService loginservice;
     
+    @Autowired
+    private RoleMenuService roleMenuService;
+    
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
-        String userId = ((TbAdmin) authentication.getPrincipal()).getAdminId();
-        if (userId != null) {
+        TbAdmin user = (TbAdmin) authentication.getPrincipal();
+        if (user != null) {
             log.info("로그인 성공시 passowrd_fail_count 초기화");
-            loginservice.resetFailCount(userId);
-            /* request.getSession().setMaxInactiveInterval(15 * 60); */ // 세션유효시간
+            loginservice.resetFailCount(user.getAdminId());
+            List<TbRoleMenu> roleMenuList = roleMenuService.selectRoleMenuListByRoleId(user.getRoleId());
+            request.getSession().setAttribute("roleMenuList", roleMenuList);
+            request.getSession().setMaxInactiveInterval(15 * 60); // 세션 유효기간
         }
         super.setDefaultTargetUrl("/");
         super.onAuthenticationSuccess(request, response, authentication);

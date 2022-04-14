@@ -1,8 +1,11 @@
 package kr.co.lotson.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +20,8 @@ public class TbAdmin implements UserDetails,Serializable {
     
     //관리자 아이디
 	private String adminId;
+	//관리자 roldId
+	private int roleId;
 	//관리자 비밀번호
 	private String password;
 	//관리자 비밀번호 확인 (validation용)
@@ -40,6 +45,23 @@ public class TbAdmin implements UserDetails,Serializable {
 	//상태
 	private int status;
 	
+   @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return authorities;
+    }
+   
+    public void setAuthorities(List<String> authList) {
+
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+        for (int i = 0; i < authList.size(); i++) {
+            authorities.add(new SimpleGrantedAuthority(authList.get(i)));
+        }
+
+        this.authorities = authorities;
+    }
+
     @Override
     public String getUsername() {
         // TODO Auto-generated method stub

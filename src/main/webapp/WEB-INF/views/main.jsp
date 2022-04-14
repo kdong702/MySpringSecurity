@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/commons/taglibs.jsp"%>
+<%@page import="kr.co.lotson.utils.SecurityUtil"%>
+<%@page import="kr.co.lotson.model.TbRoleMenu"%>
 
 <!-- 시큐리티 세션에 담긴 값을 가져와서 사용하기 -->
 <sec:authentication property="principal.username" var="userId" />
 <sec:authentication property="principal.name" var="name" />
+<sec:authentication property="principal.authorities" var="role"/>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -40,6 +43,39 @@
 			
 		});
 		
+		$(function() {
+			setTimeOffsetBetweenServerAndClient();
+		});
+		
+		function setTimeOffsetBetweenServerAndClient(){
+		    var latestTouch = getCookie('latestTouch');
+		    latestTouch = latestTouch==null ? null : Math.abs(latestTouch);
+		    var clientTime = (new Date()).getTime();
+		    var clientTimeOffset = clientTime - latestTouch;
+		    setCookie('clientTimeOffset', clientTimeOffset);
+		    console.log("확인");
+		}
+		
+		
+		function isSessionExpired(offset){
+		    var sessionExpiry = Math.abs(Util.getCookie('sessionExpiry'));
+		    var timeOffset = Math.abs(Util.getCookie('clientTimeOffset'));
+		    var localTime = (new Date()).getTime();
+		    setCookie('remainTime', (sessionExpiry - (localTime - timeOffset)));
+		    return localTime - timeOffset > (sessionExpiry-(offset||0));
+		}
+
+		
+		function checkSessionExpired(){
+		    var isExpired = isSessionExpired(-5*1000);  //세션만료예정시간을 5초 앞당겨서 검사
+		    if(isExpired === true){
+		        alert('Session Expired. Please login.');
+		        goLogin();
+		    }else{
+		        setTimeout('checkSessionExpired()', 10*1000);   //10초에 한번씩 티이머 반복
+		    }
+		}
+		
 	</script>
 </head>
 <body>
@@ -49,9 +85,9 @@
 	<!-- <div id="header"></div> -->
 	<!-- e:Header -->
 	
-	
 	<!-- s:BODYCONTENT -->
 	<div id="body">
+
 		
 		<!-- s:LNB MENU -->
 		<div id="lnb">
@@ -77,60 +113,38 @@
 						<span class="row2">
 							<a href="javascript:;" class="btn_mypage"><span>정보수정</span></a><a href="<c:url value="/logout"/>" class="btn_logout"><span>로그아웃</span></a>
 						</span>
+						<br>
+						<span class="user_id"><p>   권한 ${role }</p></span>
 					</div>
 					<!-- E:20160725 수정 -->
 				</div>
 				<!-- e:로그인후  -->
 			</div>
+			
 			<div class="lnb_inner">
 				
 				<!-- 활성화시 li class="here" -->
 				<ul class="l_navi">
-					<li class="dep1_li"><a href="javascript:;"><span>신용인증서 관리</span><i>ico</i></a>
-						<ul class="dep2_li_ul">
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴1</span></a></li>
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴2</span></a></li>
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴3</span></a></li>
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴4</span></a>
-								<!-- S:3depth -->
-								<!-- <ul class="dep3_li_ul">
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴1</span></a></li>
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴2</span></a></li>
-								</ul> -->
-								<!-- E:3depth -->
-							</li>
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴5</span></a></li>
-						</ul>
-					</li>
-					<li class="dep1_li"><a href="javascript:;"><span>시스템 관리</span><i>ico</i></a>
-						<ul class="dep2_li_ul">
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>제휴사담당자 관리</span></a></li>
-							<li class="dep2_li"><a href="javascript:alert('a');"><i>ico</i><span>로그인 이력 조회</span></a>
-								<!-- S:3depth -->
-								<!-- <ul class="dep3_li_ul">
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴1</span></a></li>
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴2</span></a></li>
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴3</span></a></li>
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴4</span></a></li>
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴5</span></a></li>
-								</ul> -->
-								<!-- E:3depth -->
-							</li>
-							<li class="dep2_li"><a href="http://www.naver.com"><i>ico</i><span>클릭2 url</span></a></li>
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴4</span></a>
-								<!-- S:3depth -->
-								<!--<ul class="dep3_li_ul">
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴1</span></a></li>
-									<li class="dep3_li"><a href="javascript:;"><i>- </i><span>depth3 메뉴2</span></a></li>
-								</ul> -->
-								<!-- E:3depth -->
-							</li>
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴5</span></a></li>
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴6</span></a></li>
-							<li class="dep2_li"><a href="javascript:;"><i>ico</i><span>depth2 메뉴7</span></a></li>
-						</ul>
-					</li>
-					<li class="dep1_li"><a href="javascript:;"><span>메뉴 단독</span><i>ico</i></a></li>
+					<c:set var="currentGroupMenuCd" value=""/>
+					<c:forEach var="groupMenu" items="${roleMenuList}" varStatus="status">
+						<c:if test="${currentGroupMenuCd ne groupMenu.tbMenu.menuGroupCd}">
+						<c:set var="currentGroupMenuCd" value="${groupMenu.tbMenu.menuGroupCd}"/>
+							<c:if test = "${currentGroupMenuCd ne '0000'}">
+								<li <%if (SecurityUtil.matchURL(request, ((TbRoleMenu)pageContext.findAttribute("groupMenu")).getTbMenu().getMenuUrl())) { out.println("class=\"dep1_li active\""); }else{out.println("class=\"dep1_li\"");}%>>
+									<a href="javascript:;"><span><c:out value="${groupMenu.tbMenu.menuName}"/></span><i class="ico_m_sub">열기</i></a>
+									<ul class="dep2_li_ul">
+										<c:forEach var="inMenu" items="${roleMenuList}">
+											<c:if test="${(currentGroupMenuCd eq inMenu.tbMenu.menuGroupCd) && (currentGroupMenuCd ne inMenu.tbMenu.menuCd)}">
+												<li <%if (SecurityUtil.matchURL(request, ((TbRoleMenu)pageContext.findAttribute("inMenu")).getTbMenu().getMenuUrl())) { out.println("class=\"dep2_li active\""); }else{out.println("class=\"dep2_li\"");}%>>
+													<a href="<c:url value='${fn:replace(inMenu.tbMenu.menuUrl,"**","")}'/><c:url value='${inMenu.tbMenu.menuDefaultUrl}'/>"><i>ico</i><span><c:out value="${inMenu.tbMenu.menuName}"/></span></a>
+												</li>
+											</c:if>
+										</c:forEach>
+									</ul>
+								</li>
+							</c:if>
+						</c:if>
+					</c:forEach>	
 				</ul>
 				
 			</div>

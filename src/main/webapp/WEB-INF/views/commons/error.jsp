@@ -3,8 +3,8 @@
 
 <!DOCTYPE html>
 <html>
-<script type="text/javascript" src="js/cams.front.ui.js"></script>
-<link rel="stylesheet" type="text/css" href="css/cams_sub.css" />
+<script type="text/javascript" src="/js/cams.front.ui.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/cams_sub.css" />
 <head>
 <title>에러페이지</title>
 <script type="text/javascript">

@@ -2,18 +2,18 @@ package kr.co.lotson.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import kr.co.lotson.dao.DemoDao;
-import kr.co.lotson.service.DemoService;
+import kr.co.lotson.dao.UserDao;
+import kr.co.lotson.service.UserService;
 
 @Service
-public class DemoServiceImpl implements DemoService{
+public class UserServiceImpl implements UserService{
     
     @Autowired
-    private DemoDao demoDao;
+    private UserDao userDao;
     
     @Override
     public String selectAdminInfo() {
-        return demoDao.selectAdminInfo();
+        return userDao.selectAdminInfo();
     }
 
 }

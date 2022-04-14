@@ -68,6 +68,9 @@
 			alert(msg);
 
 		}
+		function login() {
+			$("#loginForm").submit();
+		}
 		
 	</script>
 </head>
@@ -83,10 +86,10 @@
 					<form action="/loginProcess" method="post" id="loginForm">
 					<div class="input_form">
 						<label class="input_box ip_id">
-							<input type="text" name="username" placeholder="아이디를 입력하세요" />
+							<input type="text" name="username" placeholder="아이디를 입력하세요" onkeypress="if(event.keyCode == 13){login();}"/>
 						</label>
 						<label class="input_box ip_pw">
-							<input type="password" name="password" placeholder="비밀번호를 입력하세요" />
+							<input type="password" name="password" placeholder="비밀번호를 입력하세요" onkeypress="if(event.keyCode == 13){login();}" />
 						</label>
 					</div>
 					

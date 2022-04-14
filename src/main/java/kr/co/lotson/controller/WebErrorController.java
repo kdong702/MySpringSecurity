@@ -30,6 +30,8 @@ public class WebErrorController implements ErrorController{
                 msg = "401 세션이 만료되었거나 로그인이 필요한 서비스입니다." ; // 401
             } else if(statusCode == HttpStatus.FORBIDDEN.value()) {
                 msg = "권한이 없습니다." ; // 403
+            }else if(statusCode == HttpStatus.METHOD_NOT_ALLOWED.value()) {
+                msg = "메서드 not allowed." ; // 405
             }else {
                 msg = "시스템 에러가 발생하였습니다.\n관리자에게 문의해 주세요." ; //500
             }

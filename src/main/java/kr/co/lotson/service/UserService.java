@@ -1,6 +1,6 @@
 package kr.co.lotson.service;
 
-public interface DemoService {
+public interface UserService {
 
     String selectAdminInfo();
 

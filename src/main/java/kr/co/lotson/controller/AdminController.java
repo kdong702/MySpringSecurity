@@ -4,28 +4,32 @@ import java.sql.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import kr.co.lotson.service.DemoService;
+import kr.co.lotson.model.TbAdmin;
+import kr.co.lotson.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-public class DemoController {
+public class AdminController {
     
     @Autowired
-    private DemoService demoService;
+    private UserService userService;
     
     @RequestMapping("/")
     public String welcome() {
-        return "welcome";
+        
+        return "main";
     }
     
     @RequestMapping("/test")
     public String test(ModelMap model) {
-        String test = demoService.selectAdminInfo();
+        String test = userService.selectAdminInfo();
         model.addAttribute("test", test);
         return "test";
     }
