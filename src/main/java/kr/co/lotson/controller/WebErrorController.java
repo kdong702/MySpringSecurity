@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 @Controller
 public class WebErrorController implements ErrorController{
@@ -17,6 +19,10 @@ public class WebErrorController implements ErrorController{
         String msg = "관리자에게 문의바랍니다.";
         
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        
+        if ("true".equalsIgnoreCase(request.getHeader("AJAX"))) { // ajax 요청일 경우
+            model = new ModelMap(new MappingJackson2JsonView());
+        }
         
         if(status != null){
             int statusCode = Integer.valueOf(status.toString());

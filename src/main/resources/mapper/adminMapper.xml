@@ -51,7 +51,12 @@
 		WHERE 
 			ADMIN_ID =#{adminId}
 	</update>
-
+	
+	<select id="selectList" resultType="kr.co.lotson.model.TbAdmin">
+		SELECT
+			*
+		FROM TB_ADMIN
+	</select>
 	
 	
 </mapper>

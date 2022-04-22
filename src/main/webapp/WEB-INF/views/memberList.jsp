@@ -141,14 +141,14 @@
 		<div id="lnb">
 			<div class="con">
 				<h1 class="logo">
-					<a href="javascript:;">
-						<img src="images/partners/logos.png" alt="LG PAY partners" />
+					<a href="/">
+						<img src="/images/partners/logos.png" alt="LG PAY partners" />
 					</a>
 				</h1>
 				<!-- s:로그인후  -->
 				<div class="user_info">
 					<div class="icon">
-						<img src="images/partners/ico_userinfo.png" alt="사용자 아이콘"/>
+						<img src="/images/partners/ico_userinfo.png" alt="사용자 아이콘"/>
 					</div>
 					<!-- S:20160725 수정 -->
 					<div class="uinfo_con">
@@ -223,7 +223,7 @@
 		
 			<!-- S:Title -->
 			<div class="ptitle">
-				<h2>제휴사담당자 관리</h2>
+				<h2>관리자 리스트</h2>
 				<div class="pnav">
 					<a href="#">Home</a>
 					<span class="bar">></span>
@@ -340,108 +340,68 @@
 			<table class="dtbl_col" cellspacing="0" cellpadding="0" summary="">
 				<caption></caption>
 				<colgroup>
-					<col width="10%;" />
+					<col width="5%;" />
 					<col width="10%;" />
 					<col width="20%;" />
-					<col width="13%;" />
-					<col width="13%;" />
-					<col width="13%;" />
-					<col width="10%;" />
-					<col width="10%;" />
+					<col width="15%;" />
+					<col width="30%;" />
+					<col width="20%;" />
+					
 				</colgroup>
 				<thead>
 					<tr>
-						<th scope="col">NO</th>
-						<th scope="col">ID</th>
+						<th scope="col">
+							<div class="submit_btn">
+								<input type="checkbox" id="checkall" value="">
+							</div>
+						</th>
+						<th scope="col">아이디</th>
 						<th scope="col">이름</th>
-						<th scope="col">RID</th>
-						<th scope="col">만료일</th>
 						<th scope="col">등록일</th>
-						<th scope="col">등록자</th>
 						<th scope="col">상태</th>
+						<th scope="col">수정자</th>
 					</tr>
 				</thead>
 				<tbody>
+					<c:choose>
+				<c:when test="${empty userList }">
 					<tr>
-						<td>55</td>
-						<td>홍길동</td>
-						<td>admin@google.com</td>
-						<td>010-1234-1234</td>
-						<td>2017-06-27</td>
-						<td>2017-06-27</td>
-						<td>홍길동</td>
-						<td>상태</td>
+						<td colspan="6">데이터가 없습니다.</td>
 					</tr>
-					<tr>
-						<td>54</td>
-						<td>홍길동</td>
-						<td>admin@google.com</td>
-						<td>010-1234-1234</td>
-						<td>2017-06-27</td>
-						<td>2017-06-27</td>
-						<td>홍길동</td>
-						<td>상태</td>
-					</tr>
-					<tr>
-						<td>53</td>
-						<td>홍길동</td>
-						<td>admin@google.com</td>
-						<td>010-1234-1234</td>
-						<td>2017-06-27</td>
-						<td>2017-06-27</td>
-						<td>홍길동</td>
-						<td>상태</td>
-					</tr>
-					<tr>
-						<td>52</td>
-						<td>홍길동</td>
-						<td>admin@google.com</td>
-						<td>010-1234-1234</td>
-						<td>2017-06-27</td>
-						<td>2017-06-27</td>
-						<td>홍길동</td>
-						<td>상태</td>
-					</tr>
-					<tr>
-						<td>51</td>
-						<td>홍길동</td>
-						<td>admin@google.com</td>
-						<td>010-1234-1234</td>
-						<td>2017-06-27</td>
-						<td>2017-06-27</td>
-						<td>홍길동</td>
-						<td>상태</td>
-					</tr>
-					<tr>
-						<td>50</td>
-						<td>홍길동</td>
-						<td>admin@google.com</td>
-						<td>010-1234-1234</td>
-						<td>2017-06-27</td>
-						<td>2017-06-27</td>
-						<td>홍길동</td>
-						<td>상태</td>
-					</tr>
-					<tr>
-						<td>49</td>
-						<td>홍길동</td>
-						<td>admin@google.com</td>
-						<td>010-1234-1234</td>
-						<td>2017-06-27</td>
-						<td>2017-06-27</td>
-						<td>홍길동</td>
-						<td>상태</td>
-					</tr>
-					<tr>
-						<td>48</td>
-						<td>홍길동</td>
-						<td>admin@google.com</td>
-						<td>010-1234-1234</td>
-						<td>2017-06-27</td>
-						<td>2017-06-27</td>
-						<td>홍길동</td>
-						<td>상태</td>
-					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${userList }" var="list" varStatus="status">
+						<tr>
+							<td>
+								<input type="checkbox" value="${list.adminId }" name="adminId" />
+							</td>
+							<td>
+								<a href="javascript:detail('<c:out value="${list.adminId }"/>');"><c:out value="${list.adminId }" /></a>
+							</td>
+							<td class="ellipsis">
+								<a href="javascript:detail('<c:out value="${list.adminId }"/>');"><c:out value="${list.name }" /></a>
+							</td>
+							<td class="last input"><fmt:parseDate var="regDt" value="${list.regDt }" pattern="yyyyMMddHHmmss" /> 
+								<a href="javascript:detail('<c:out value="${list.adminId }"/>');"><fmt:formatDate value="${regDt}" pattern="yyyy년 MM월 dd일 HH:mm:ss" /></a>
+							</td>
+							<td id="statusArea">
+								<c:choose>
+									<c:when test="${list.status eq 1}">
+										<a class="btn_white" href="javascript:lock('${list.adminId }', 3)">정상</a>
+									</c:when>
+									<c:when test="${list.status eq 3}">
+										<a class="btn_pos" href="javascript:lock('${list.adminId }', 1)">잠김</a>
+									</c:when>
+								</c:choose>
+							</td>
+							<td>
+								<a href="javascript:detail('<c:out value="${list.adminId }"/>');"><c:out value="${list.modId }" /></a>
+							</td>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+					
 				</tbody>
 			</table>
 			<!-- E:테이블 기본테이블  -->

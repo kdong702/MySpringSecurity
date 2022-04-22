@@ -62,7 +62,7 @@ var _timer;//gnb timer
 					dayNamesMin: ['SUN','MON','THE','WED','THU','FRI','SAT'],
 					showMonthAfterYear: true,
 					showOn: "button",
-					buttonImage : "images/ui/btn_calendar.png",
+					buttonImage : "/images/ui/btn_calendar.png",
 					buttonImageOnly: true,
 					buttonText: "Select date",
 					currentText: "Now"

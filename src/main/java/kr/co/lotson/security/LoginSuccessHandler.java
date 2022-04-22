@@ -34,8 +34,12 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             log.info("로그인 성공시 passowrd_fail_count 초기화");
             loginservice.resetFailCount(user.getAdminId());
             List<TbRoleMenu> roleMenuList = roleMenuService.selectRoleMenuListByRoleId(user.getRoleId());
-            request.getSession().setAttribute("roleMenuList", roleMenuList);
-            request.getSession().setMaxInactiveInterval(15 * 60); // 세션 유효기간
+//            request.getSession().setAttribute("aaa", roleMenuList);
+            request.setAttribute("aaa", roleMenuList);
+            request.getSession().setMaxInactiveInterval(5 * 60); // 세션 유효기간
+//            user.setRoleMenuList(roleMenuList);
+            
+            
         }
         super.setDefaultTargetUrl("/");
         super.onAuthenticationSuccess(request, response, authentication);

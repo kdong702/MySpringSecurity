@@ -1,5 +1,6 @@
 package kr.co.lotson.dao;
 
+import java.util.List;
 import org.springframework.stereotype.Repository;
 import kr.co.lotson.model.TbAdmin;
 
@@ -16,4 +17,6 @@ public interface UserDao {
     void lockStatus(String adminId);
 
     void resetFailCount(String adminId);
+
+    List<TbAdmin> selectList();
 }

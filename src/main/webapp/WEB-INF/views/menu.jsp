@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/commons/taglibs.jsp"%>
+<%@page import="kr.co.lotson.utils.SecurityUtil"%>
+<%@page import="kr.co.lotson.model.TbRoleMenu"%>
 
 <!-- 시큐리티 세션에 담긴 값을 가져와서 사용하기 -->
 
@@ -76,54 +78,26 @@
 			<div id="gnb">
 				<div class="con_inner">
 					<ul class="g_navi">
-						<li class="dep1_li dep_item_1">
-							<a href="javasciprt:;"><span>프로파일관리</span></a>
-							<ul class="dep2_li_ul">
-								<li><a href="javasciprt:;">카드(SE)프로파일</a></li>
-								<li><a href="javasciprt:;">애플리케이션 프로파일</a></li>
-								<li><a href="javasciprt:;">키 프로파일</a></li>
-								<li><a href="javasciprt:;">로드파일 프로파일</a></li>
-								<li><a href="javasciprt:;">TAP 프로파일</a></li>
-							</ul>
-						</li>
-						<li class="dep1_li dep_item_2">
-							<a href="javasciprt:;"><span>발급데이터관리</span></a>
-							<ul class="dep2_li_ul">
-								<li><a href="javasciprt:;">카드(SE) 상품관리</a></li>
-								<li><a href="javasciprt:;">발급 상품 관리</a></li>
-								<li><a href="javasciprt:;">키 프로파일</a></li>
-								<li><a href="javasciprt:;">신용 인증서 관리</a></li>
-								<li><a href="javasciprt:;">카드(SE) 코드관리</a></li>
-							</ul>
-						</li>
-						<li class="dep1_li dep_item_3">
-							<a href="javasciprt:;"><span>eSE라이프 사이클관리</span></a>
-							<ul class="dep2_li_ul">
-								<li><a href="javasciprt:;">카드(SE)라이프 사이클 조회</a></li>
-								<li><a href="javasciprt:;">키 파일 배치 상태조회</a></li>
-								<li><a href="javasciprt:;">카드(SE)Key 상태 조회</a></li>
-							</ul>
-						</li>
-						<li class="dep1_li dep_item_4">
-							<a href="javasciprt:;"><span>통계관리</span></a>
-							<ul class="dep2_li_ul">
-								<li><a href="javasciprt:;">eSE 제조사 별 통계</a></li>
-								<li><a href="javasciprt:;">키 상태 별 통계</a></li>
-								<li><a href="javasciprt:;">애플리케이션별 라이프 사이클 통계</a></li>
-								<li><a href="javasciprt:;">파트너별 발급통계</a></li>
-							</ul>
-						</li>
-						<li class="dep1_li dep_item_5">
-							<a href="javasciprt:;"><span>통계관리</span></a>
-							<ul class="dep2_li_ul">
-								<li><a href="javasciprt:;">코드관리</a></li>
-								<li><a href="javasciprt:;">관리자관리</a></li>
-								<li><a href="javasciprt:;">역할관리</a></li>
-								<li><a href="javasciprt:;">메뉴관리</a></li>
-								<li><a href="javasciprt:;">파트너사 관리</a></li>
-								<li><a href="javasciprt:;">로그인 접속현황</a></li>
-							</ul>
-						</li>
+						<c:set var="currentGroupMenuCd" value=""/>
+						<c:forEach var="groupMenu" items="${list}" varStatus="status">
+							<c:if test="${currentGroupMenuCd ne groupMenu.tbMenu.menuGroupCd}">
+								<c:set var="currentGroupMenuCd" value="${groupMenu.tbMenu.menuGroupCd}"/>
+								<c:if test = "${currentGroupMenuCd ne '0000'}">
+									<li <%if (SecurityUtil.matchURL(request, ((TbRoleMenu)pageContext.findAttribute("groupMenu")).getTbMenu().getMenuUrl())) { out.println("class=\"dep1_li active\""); }else{out.println("class=\"dep1_li\"");}%>>
+										<a href="javascript:;"><span><c:out value="${groupMenu.tbMenu.menuName}"/></span><i class="ico_m_sub">열기</i></a>
+										<ul class="dep2_li_ul">
+											<c:forEach var="inMenu" items="${list}">
+												<c:if test="${(currentGroupMenuCd eq inMenu.tbMenu.menuGroupCd) && (currentGroupMenuCd ne inMenu.tbMenu.menuCd)}">
+													<li <%if (SecurityUtil.matchURL(request, ((TbRoleMenu)pageContext.findAttribute("inMenu")).getTbMenu().getMenuUrl())) { out.println("class=\"dep2_li active\""); }else{out.println("class=\"dep2_li\"");}%>>
+														<a href="<c:url value='${fn:replace(inMenu.tbMenu.menuUrl,"**","")}'/><c:url value='${inMenu.tbMenu.menuDefaultUrl}'/>"><span><c:out value="${inMenu.tbMenu.menuName}"/></span></a>
+													</li>
+												</c:if>
+											</c:forEach>
+										</ul>
+									</li>
+								</c:if>
+							</c:if>
+						</c:forEach>
 					</ul>
 				</div>
 			</div>

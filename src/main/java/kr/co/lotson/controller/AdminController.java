@@ -22,8 +22,7 @@ public class AdminController {
     private UserService userService;
     
     @RequestMapping("/")
-    public String welcome() {
-        
+    public String welcome(HttpServletRequest request) {
         return "main";
     }
     

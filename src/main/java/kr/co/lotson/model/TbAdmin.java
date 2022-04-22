@@ -45,6 +45,9 @@ public class TbAdmin implements UserDetails,Serializable {
 	//상태
 	private int status;
 	
+	//메뉴리스트 담기 위해 추가
+	private List<TbRoleMenu> roleMenuList;
+	
    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
